@@ -15,7 +15,7 @@ public:
 	HANDLE icdev;
 	int init_device(void);
 	int close_device(void);
-	int of_read_rfid_card(void);
+	long long of_read_rfid_card(void);
 	string of_read_insur_card_no(void);
 	void beep(void);
 };
@@ -43,7 +43,7 @@ int DecardReader::close_device(void) {
 	return 1;
 }
 
-int DecardReader::of_read_rfid_card(void) {
+long long DecardReader::of_read_rfid_card(void) {
 	int st = -1;
 	DWORD cardsnr = -1;
 	short w_tag_type = -1;
@@ -209,7 +209,7 @@ int main()
 
 		DecardReader reader;
 		reader.init_device();
-		int rfid_card_no = reader.of_read_rfid_card();
+		long long rfid_card_no = reader.of_read_rfid_card();
 		string insur_card_no = reader.of_read_insur_card_no();
 		int code = 200;
 		if (rfid_card_no < 0 && insur_card_no.length() == 3) {
@@ -218,7 +218,7 @@ int main()
 		char data[1024];
 		sprintf_s(
 			data,
-			"{\"code\": %d, \"rfid_card_no\": \"%010d\", \"insu_card_no\":\"%s\"}",
+			"{\"code\": %d, \"rfid_card_no\": \"%010lld\", \"insur_card_no\":\"%s\"}",
 			code,
 			rfid_card_no,
 			insur_card_no.c_str()
