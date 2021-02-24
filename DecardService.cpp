@@ -115,11 +115,11 @@ string DecardReader::of_read_insur_card_no() {
 	st = IC_Status(icdev);
 	std::cout << "ic stauts: " << st << std::endl;
 	if (st  == 1) {
-		return "101";
+		return "-101";
 	}
 
 	if (st< 0) {
-		return "102";
+		return "-102";
 	}
 	
 
@@ -129,7 +129,7 @@ string DecardReader::of_read_insur_card_no() {
 
 	st = IC_InitType(icdev, 0x0c);
 	if (st < 0) {
-		return "103";
+		return "-103";
 	}
 	std::cout << "Init status " << st << std::endl;
 	st = IC_CpuReset_Hex(icdev, &rlen, databuffer);
@@ -138,7 +138,7 @@ string DecardReader::of_read_insur_card_no() {
 	cout << "rlen " << (int)rlen << endl;
 	std::cout << databuffer << std::endl;
 	if (st < 0) {
-		return "104";
+		return "-104";
 	}
 
 
@@ -154,7 +154,7 @@ string DecardReader::of_read_insur_card_no() {
 	cout << "rlen " << (int)rlen << endl;
 	cout << "data: " << databuffer << endl;
 	if (st < 0) {
-		return "105";
+		return "-105";
 	}
 
 	cmdstr = "00A4020002EF05";
@@ -167,7 +167,7 @@ string DecardReader::of_read_insur_card_no() {
 	cout << "rlen " << (int)rlen << endl;
 	cout << "data: " << databuffer << endl;
 	if (st < 0) {
-		return "106";
+		return "-106";
 	}
 
 	cmdstr = "00B207000B";
@@ -180,7 +180,7 @@ string DecardReader::of_read_insur_card_no() {
 	cout << "rlen " << (int)rlen << endl;
 	cout << "data: " << databuffer << endl;
 	if (st < 0) {
-		return "107";
+		return "-107";
 	}
 	char ascbuffer[1024];
 	databuffer[rlen*2 -4 +1] = '\0';
