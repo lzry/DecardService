@@ -204,13 +204,16 @@ int main()
 
 	httplib::Server svr;
 
+
 	svr.Get("/read_card", [](const httplib::Request&, httplib::Response& res) {
-
-
+		clock_t start, finish;
+		start = clock();
 		DecardReader reader;
 		reader.init_device();
 		long long rfid_card_no = reader.of_read_rfid_card();
 		string insur_card_no = reader.of_read_insur_card_no();
+		finish = clock();
+
 		int code = 200;
 		if (rfid_card_no < 0 && insur_card_no.length() == 3) {
 			code = 503;
@@ -218,10 +221,11 @@ int main()
 		char data[1024];
 		sprintf_s(
 			data,
-			"{\"code\": %d, \"rfid_card_no\": \"%010lld\", \"insur_card_no\":\"%s\"}",
+			"{\"code\": %d, \"rfid_card_no\": \"%010lld\", \"insur_card_no\":\"%s\", \"time\": \"%.0fms\"}",
 			code,
 			rfid_card_no,
-			insur_card_no.c_str()
+			insur_card_no.c_str(),
+			float(finish) - float(start)
 			);
 		res.set_content(data, "application/json");
 		reader.close_device();
