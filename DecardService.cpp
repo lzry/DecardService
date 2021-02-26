@@ -215,7 +215,7 @@ int main()
 		finish = clock();
 
 		int code = 200;
-		if (rfid_card_no < 0 && insur_card_no.length() == 3) {
+		if (rfid_card_no < 0 && insur_card_no.length() == 4) {
 			code = 503;
 		}
 		char data[1024];
@@ -227,6 +227,7 @@ int main()
 			insur_card_no.c_str(),
 			float(finish) - float(start)
 			);
+		res.set_header("Access-Control-Allow-Origin", "*");
 		res.set_content(data, "application/json");
 		reader.close_device();
 	});
